@@ -26,6 +26,7 @@ emcc src/everything.c \
   -I llvm-project/llvm/include \
   -s ERROR_ON_UNDEFINED_SYMBOLS=0 \
   -sWASM_BIGINT \
+  --no-entry \
   -O3
 
 node --experimental-wasm-bigint ./index.mjs

@@ -1,0 +1,6 @@
+{
+  "files.associations": {
+    "errorhandling.h": "c",
+    "disassemblertypes.h": "c"
+  }
+}
