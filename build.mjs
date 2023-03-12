@@ -62,7 +62,7 @@ const funcs = new Array();
 const type_map = (qualType) => {
   switch(qualType)
   {
-    case "char **":                            return "any";  break;
+    case "char **":                            return "LLVMStringRef[]";  break;
     case "const char *":                       return "LLVMStringRef"; break;
     case "int":                                return "number"; break;
     case "unsigned int *":                     return "any"; break;
