@@ -82,7 +82,7 @@ const type_map = (qualType) => {
     case "uint8_t":                            return "number"; break;
     case "struct LLVMMCJITCompilerOptions *":  return "any"; break;
     case "const char *const *":                return "any"; break;
-    default:  return ("_"+qualType.split(' ')[0]); break;
+    default:  return (qualType.split(' ')[0]); break;
   }
 }
 
@@ -91,7 +91,7 @@ nodes.forEach(element => {
 
   if(element?.kind == "TypedefDecl")
   {
-    typedefs.push("_" + element.name);
+    typedefs.push(element.name);
   }
   else if(element?.kind == "FunctionDecl")
   {
@@ -109,6 +109,7 @@ nodes.forEach(element => {
     element.type = type_map(element.type.qualType);
   }
 });
+typedefs.splice(typedefs.indexOf("LLVMBool"), 1);
 
 //--- Write Bindings and Typings ---//
 let llvm_ts = "";
@@ -129,6 +130,7 @@ const LLVM = await (llvm as Promise<Module>);
 export type Pointer<T> = number & { type: T };\n\n`)
 
 //- LLVM Struct Typings -//
+llvm_ts = llvm_ts.concat("export type LLVMBool = 1|0;\n");
 typedefs.forEach(element => {
   llvm_ts = llvm_ts.concat("export type " + element + " = Pointer<\"" + element + "\">;\n");
 });
