@@ -1,15 +1,13 @@
 
 let LLVM!: Module;
 
-async function load() {
+export async function load(): Promise<Module> {
   // @ts-expect-error
   const llvm = await import("./llvm-wasm.js");
   await llvm.ready;
   LLVM = llvm;
   return llvm;
 }
-
-export default load;
 
 export type Pointer<T> = number & { type: T };
 

@@ -32,7 +32,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.lowerTypeArray = exports.lift = exports.lower = void 0;
+exports.lowerTypeArray = exports.lift = exports.lower = exports.load = void 0;
 let LLVM;
 function load() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -43,7 +43,7 @@ function load() {
         return llvm;
     });
 }
-exports.default = load;
+exports.load = load;
 function lower(str) {
     str += "0";
     const length = Buffer.byteLength(str);

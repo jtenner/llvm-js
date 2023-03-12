@@ -1,5 +1,4 @@
-declare function load(): Promise<any>;
-export default load;
+export declare function load(): Promise<Module>;
 export type Pointer<T> = number & {
     type: T;
 };
