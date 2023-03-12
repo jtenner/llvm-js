@@ -122,27 +122,47 @@ llvm_exports = llvm_exports.slice(0, llvm_exports.length-1);
 llvm_exports = llvm_exports.concat("]")
 
 //- Header -//
-llvm_ts = llvm_ts.concat("//@ts-ignore\n");
-llvm_ts = llvm_ts.concat("import llvm from \"llvm.mjs\";\n");
-llvm_ts = llvm_ts.concat("export default llvm as Promise<Module>;\n");
-llvm_ts = llvm_ts.concat("const LLVM = await (llvm as Promise<Module>);\n");
-llvm_ts = llvm_ts.concat("export type Pointer<T> = number & T;\n\n");
+llvm_ts = llvm_ts.concat(`//@ts-ignore
+import llvm from "./llvm-wasm.mjs";
+export default llvm as Promise<Module>;
+const LLVM = await (llvm as Promise<Module>);
+export type Pointer<T> = number & { type: T };\n\n`)
 
 //- LLVM Struct Typings -//
 typedefs.forEach(element => {
-  llvm_ts = llvm_ts.concat("export type " + element + " = Pointer<{\n");
-  llvm_ts = llvm_ts.concat("\ttype: \"" + element + "\";\n");
-  llvm_ts = llvm_ts.concat("}>;\n");
+  llvm_ts = llvm_ts.concat("export type " + element + " = Pointer<\"" + element + "\">;\n");
 });
 
-llvm_ts = llvm_ts.concat("\nexport interface Module {\n\t");
-llvm_ts = llvm_ts.concat("HEAPU8: Uint8Array;\n\t");
-llvm_ts = llvm_ts.concat("HEAPU32: Uint32Array;\n\t");
-llvm_ts = llvm_ts.concat("ready(): Promise<Module>\n\t");
-llvm_ts = llvm_ts.concat("_LLVMModuleCreateWithName(name: LLVMStringRef): LLVMModuleRef;\n\t");
-llvm_ts = llvm_ts.concat("_malloc<T>(size: number): Pointer<T>;\n\t");
-llvm_ts = llvm_ts.concat("_free(ptr: Pointer<any>): void;\n");
-llvm_ts = llvm_ts.concat("}\n\n");
+llvm_ts = llvm_ts.concat(`
+export interface Module {
+  HEAPU8: Uint8Array;
+  HEAPU32: Uint32Array;
+  ready(): Promise<Module>;
+  _LLVMAppendBasicBlock(func: LLVMFuncRef, name: LLVMStringRef): LLVMBasicBlockRef;
+
+  _LLVMBuildAdd(B: LLVMBuilderRef, LHS: LLVMValueRef, RHS: LLVMValueRef, Name: LLVMStringRef): LLVMValueRef
+  _LLVMBuildGlobalStringPtr(builder: LLVMBuilderRef, str: LLVMStringRef, name: LLVMStringRef): LLVMValueRef;
+  _LLVMCreateBuilder(): LLVMBuilderRef;
+  _LLVMConstInt(type: LLVMTypeRef, value: bigint, signExtend: LLVMBool): LLVMValueRef;
+  _LLVMConstReal(type: LLVMTypeRef, value: number): LLVMValueRef;
+  _LLVMConstString(str: LLVMStringRef, len: number, doNotNullTerminate: LLVMBool): LLVMValueRef;
+  _LLVMGetParam(func: LLVMFuncRef, index: number): LLVMValueRef;
+  _LLVMGetPoison(type: LLVMTypeRef): LLVMValueRef;
+  _LLVMInt1Type(): LLVMTypeRef;
+  _LLVMInt8Type(): LLVMTypeRef;
+  _LLVMInt16Type(): LLVMTypeRef;
+  _LLVMInt32Type(): LLVMTypeRef;
+  _LLVMInt64Type(): LLVMTypeRef;
+  _LLVMFloatType(): LLVMTypeRef;
+  _LLVMDoubleType(): LLVMTypeRef;
+  _LLVMVoidType(): LLVMTypeRef;
+  _LLVMAddFunction(mod: LLVMModuleRef, name: LLVMStringRef, funcType: LLVMTypeRef): LLVMFuncRef;
+  _LLVMFunctionType(returnType: LLVMTypeRef, parameterTypes: Pointer<LLVMTypeRef>, count: number, isVarArg: LLVMBool): LLVMTypeRef;
+  _LLVMModuleCreateWithName(name: LLVMStringRef): LLVMModuleRef;
+  _LLVMPositionBuilderAtEnd(builder: LLVMBuilderRef, block: LLVMBasicBlockRef): void;
+  _malloc<T>(size: number): Pointer<T>;
+  _free(ptr: Pointer<any>): void;
+}\n\n`)
 
 //- LLVM Function Typings -//
 funcs.forEach(element => {
@@ -159,19 +179,29 @@ funcs.forEach(element => {
 });
 llvm_ts = llvm_ts.concat("\n");
 
-//- String lifting/lowering -//
-llvm_ts = llvm_ts.concat("export function lower(str: string): LLVMStringRef {\n\t");
-llvm_ts = llvm_ts.concat("str += \"0\";\n\t");
-llvm_ts = llvm_ts.concat("const length = Buffer.byteLength(str);\n\t");
-llvm_ts = llvm_ts.concat("const ptr = LLVM._malloc<{ type: \"LLVMStringRef\"; }>(length);\n\t");
-llvm_ts = llvm_ts.concat("Buffer.from(LLVM.HEAPU8.buffer, ptr).write(str, \"utf-8\");\n\t");
-llvm_ts = llvm_ts.concat("return ptr;\n");
-llvm_ts = llvm_ts.concat("}\n\n");
+//- Lifting/lowering -//
+llvm_ts = llvm_ts.concat(`
+export function lower(str: string): LLVMStringRef {
+  str += "\0";
+  const length = Buffer.byteLength(str);
+  const ptr = LLVM._malloc<"LLVMStringRef">(length);
+  Buffer.from(LLVM.HEAPU8.buffer, ptr).write(str, "utf-8");
+  return ptr;
+}
 
-llvm_ts = llvm_ts.concat("export function lift(ptr: Pointer<{ type: \"LLVMStringRef\"; }>): string {\n\t");
-llvm_ts = llvm_ts.concat("const index = LLVM.HEAPU8.indexOf(0, ptr);\n\t");
-llvm_ts = llvm_ts.concat("return Buffer.from(LLVM.HEAPU8.buffer).toString(\"utf-8\", ptr, index);\n");
-llvm_ts = llvm_ts.concat("}\n\n");
+export function lift(ptr: Pointer<"LLVMStringRef">): string {
+  const index = LLVM.HEAPU8.indexOf(0, ptr);
+  return Buffer.from(LLVM.HEAPU8.buffer).toString("utf-8", ptr, index);
+}
+
+export function lowerTypeArray(elements: LLVMTypeRef[]): Pointer<LLVMTypeRef> {
+  const elementCount = elements.length;
+  const ptr = LLVM._malloc<LLVMTypeRef>(elementCount << 2);
+  for (let i = 0; i < elementCount; i++) {
+    LLVM.HEAPU32[ptr >>> 2] = elements[i];
+  }
+  return ptr;
+}\n\n`)
 
 //--- Write to respective files ---//
 await writeFile("./build/llvm.d.ts", llvm_ts);

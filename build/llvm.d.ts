@@ -1,251 +1,115 @@
 //@ts-ignore
-import llvm from "llvm.mjs";
+import llvm from "./llvm-wasm.mjs";
 export default llvm as Promise<Module>;
 const LLVM = await (llvm as Promise<Module>);
-export type Pointer<T> = number & T;
+export type Pointer<T> = number & { type: T };
 
-export type LLVMStringRef = Pointer<{
-	type: "LLVMStringRef";
-}>;
-export type _LLVMBool = Pointer<{
-	type: "_LLVMBool";
-}>;
-export type _LLVMMemoryBufferRef = Pointer<{
-	type: "_LLVMMemoryBufferRef";
-}>;
-export type _LLVMContextRef = Pointer<{
-	type: "_LLVMContextRef";
-}>;
-export type _LLVMModuleRef = Pointer<{
-	type: "_LLVMModuleRef";
-}>;
-export type _LLVMTypeRef = Pointer<{
-	type: "_LLVMTypeRef";
-}>;
-export type _LLVMValueRef = Pointer<{
-	type: "_LLVMValueRef";
-}>;
-export type _LLVMBasicBlockRef = Pointer<{
-	type: "_LLVMBasicBlockRef";
-}>;
-export type _LLVMMetadataRef = Pointer<{
-	type: "_LLVMMetadataRef";
-}>;
-export type _LLVMNamedMDNodeRef = Pointer<{
-	type: "_LLVMNamedMDNodeRef";
-}>;
-export type _LLVMValueMetadataEntry = Pointer<{
-	type: "_LLVMValueMetadataEntry";
-}>;
-export type _LLVMBuilderRef = Pointer<{
-	type: "_LLVMBuilderRef";
-}>;
-export type _LLVMDIBuilderRef = Pointer<{
-	type: "_LLVMDIBuilderRef";
-}>;
-export type _LLVMModuleProviderRef = Pointer<{
-	type: "_LLVMModuleProviderRef";
-}>;
-export type _LLVMPassManagerRef = Pointer<{
-	type: "_LLVMPassManagerRef";
-}>;
-export type _LLVMPassRegistryRef = Pointer<{
-	type: "_LLVMPassRegistryRef";
-}>;
-export type _LLVMUseRef = Pointer<{
-	type: "_LLVMUseRef";
-}>;
-export type _LLVMAttributeRef = Pointer<{
-	type: "_LLVMAttributeRef";
-}>;
-export type _LLVMDiagnosticInfoRef = Pointer<{
-	type: "_LLVMDiagnosticInfoRef";
-}>;
-export type _LLVMComdatRef = Pointer<{
-	type: "_LLVMComdatRef";
-}>;
-export type _LLVMModuleFlagEntry = Pointer<{
-	type: "_LLVMModuleFlagEntry";
-}>;
-export type _LLVMJITEventListenerRef = Pointer<{
-	type: "_LLVMJITEventListenerRef";
-}>;
-export type _LLVMBinaryRef = Pointer<{
-	type: "_LLVMBinaryRef";
-}>;
-export type _LLVMVerifierFailureAction = Pointer<{
-	type: "_LLVMVerifierFailureAction";
-}>;
-export type _LLVMComdatSelectionKind = Pointer<{
-	type: "_LLVMComdatSelectionKind";
-}>;
-export type _LLVMFatalErrorHandler = Pointer<{
-	type: "_LLVMFatalErrorHandler";
-}>;
-export type _LLVMOpcode = Pointer<{
-	type: "_LLVMOpcode";
-}>;
-export type _LLVMTypeKind = Pointer<{
-	type: "_LLVMTypeKind";
-}>;
-export type _LLVMLinkage = Pointer<{
-	type: "_LLVMLinkage";
-}>;
-export type _LLVMVisibility = Pointer<{
-	type: "_LLVMVisibility";
-}>;
-export type _LLVMUnnamedAddr = Pointer<{
-	type: "_LLVMUnnamedAddr";
-}>;
-export type _LLVMDLLStorageClass = Pointer<{
-	type: "_LLVMDLLStorageClass";
-}>;
-export type _LLVMCallConv = Pointer<{
-	type: "_LLVMCallConv";
-}>;
-export type _LLVMValueKind = Pointer<{
-	type: "_LLVMValueKind";
-}>;
-export type _LLVMIntPredicate = Pointer<{
-	type: "_LLVMIntPredicate";
-}>;
-export type _LLVMRealPredicate = Pointer<{
-	type: "_LLVMRealPredicate";
-}>;
-export type _LLVMLandingPadClauseTy = Pointer<{
-	type: "_LLVMLandingPadClauseTy";
-}>;
-export type _LLVMThreadLocalMode = Pointer<{
-	type: "_LLVMThreadLocalMode";
-}>;
-export type _LLVMAtomicOrdering = Pointer<{
-	type: "_LLVMAtomicOrdering";
-}>;
-export type _LLVMAtomicRMWBinOp = Pointer<{
-	type: "_LLVMAtomicRMWBinOp";
-}>;
-export type _LLVMDiagnosticSeverity = Pointer<{
-	type: "_LLVMDiagnosticSeverity";
-}>;
-export type _LLVMInlineAsmDialect = Pointer<{
-	type: "_LLVMInlineAsmDialect";
-}>;
-export type _LLVMModuleFlagBehavior = Pointer<{
-	type: "_LLVMModuleFlagBehavior";
-}>;
-export type _LLVMAttributeIndex = Pointer<{
-	type: "_LLVMAttributeIndex";
-}>;
-export type _LLVMDiagnosticHandler = Pointer<{
-	type: "_LLVMDiagnosticHandler";
-}>;
-export type _LLVMYieldCallback = Pointer<{
-	type: "_LLVMYieldCallback";
-}>;
-export type _LLVMDIFlags = Pointer<{
-	type: "_LLVMDIFlags";
-}>;
-export type _LLVMDWARFSourceLanguage = Pointer<{
-	type: "_LLVMDWARFSourceLanguage";
-}>;
-export type _LLVMDWARFEmissionKind = Pointer<{
-	type: "_LLVMDWARFEmissionKind";
-}>;
-export type _LLVMMetadataKind = Pointer<{
-	type: "_LLVMMetadataKind";
-}>;
-export type _LLVMDWARFTypeEncoding = Pointer<{
-	type: "_LLVMDWARFTypeEncoding";
-}>;
-export type _LLVMDWARFMacinfoRecordType = Pointer<{
-	type: "_LLVMDWARFMacinfoRecordType";
-}>;
-export type _LLVMDisasmContextRef = Pointer<{
-	type: "_LLVMDisasmContextRef";
-}>;
-export type _LLVMOpInfoCallback = Pointer<{
-	type: "_LLVMOpInfoCallback";
-}>;
-export type _LLVMSymbolLookupCallback = Pointer<{
-	type: "_LLVMSymbolLookupCallback";
-}>;
-export type _LLVMErrorRef = Pointer<{
-	type: "_LLVMErrorRef";
-}>;
-export type _LLVMErrorTypeId = Pointer<{
-	type: "_LLVMErrorTypeId";
-}>;
-export type _LLVMTargetDataRef = Pointer<{
-	type: "_LLVMTargetDataRef";
-}>;
-export type _LLVMTargetLibraryInfoRef = Pointer<{
-	type: "_LLVMTargetLibraryInfoRef";
-}>;
-export type _LLVMTargetMachineRef = Pointer<{
-	type: "_LLVMTargetMachineRef";
-}>;
-export type _LLVMTargetRef = Pointer<{
-	type: "_LLVMTargetRef";
-}>;
-export type _LLVMCodeGenOptLevel = Pointer<{
-	type: "_LLVMCodeGenOptLevel";
-}>;
-export type _LLVMRelocMode = Pointer<{
-	type: "_LLVMRelocMode";
-}>;
-export type _LLVMCodeModel = Pointer<{
-	type: "_LLVMCodeModel";
-}>;
-export type _LLVMCodeGenFileType = Pointer<{
-	type: "_LLVMCodeGenFileType";
-}>;
-export type _LLVMGenericValueRef = Pointer<{
-	type: "_LLVMGenericValueRef";
-}>;
-export type _LLVMExecutionEngineRef = Pointer<{
-	type: "_LLVMExecutionEngineRef";
-}>;
-export type _LLVMMCJITMemoryManagerRef = Pointer<{
-	type: "_LLVMMCJITMemoryManagerRef";
-}>;
-export type _LLVMMemoryManagerAllocateCodeSectionCallback = Pointer<{
-	type: "_LLVMMemoryManagerAllocateCodeSectionCallback";
-}>;
-export type _LLVMMemoryManagerAllocateDataSectionCallback = Pointer<{
-	type: "_LLVMMemoryManagerAllocateDataSectionCallback";
-}>;
-export type _LLVMMemoryManagerFinalizeMemoryCallback = Pointer<{
-	type: "_LLVMMemoryManagerFinalizeMemoryCallback";
-}>;
-export type _LLVMMemoryManagerDestroyCallback = Pointer<{
-	type: "_LLVMMemoryManagerDestroyCallback";
-}>;
-export type _LLVMLinkerMode = Pointer<{
-	type: "_LLVMLinkerMode";
-}>;
-export type _LLVMSectionIteratorRef = Pointer<{
-	type: "_LLVMSectionIteratorRef";
-}>;
-export type _LLVMSymbolIteratorRef = Pointer<{
-	type: "_LLVMSymbolIteratorRef";
-}>;
-export type _LLVMRelocationIteratorRef = Pointer<{
-	type: "_LLVMRelocationIteratorRef";
-}>;
-export type _LLVMBinaryType = Pointer<{
-	type: "_LLVMBinaryType";
-}>;
-export type _LLVMObjectFileRef = Pointer<{
-	type: "_LLVMObjectFileRef";
-}>;
+export type _LLVMBool = Pointer<"_LLVMBool">;
+export type _LLVMMemoryBufferRef = Pointer<"_LLVMMemoryBufferRef">;
+export type _LLVMContextRef = Pointer<"_LLVMContextRef">;
+export type _LLVMModuleRef = Pointer<"_LLVMModuleRef">;
+export type _LLVMTypeRef = Pointer<"_LLVMTypeRef">;
+export type _LLVMValueRef = Pointer<"_LLVMValueRef">;
+export type _LLVMBasicBlockRef = Pointer<"_LLVMBasicBlockRef">;
+export type _LLVMMetadataRef = Pointer<"_LLVMMetadataRef">;
+export type _LLVMNamedMDNodeRef = Pointer<"_LLVMNamedMDNodeRef">;
+export type _LLVMValueMetadataEntry = Pointer<"_LLVMValueMetadataEntry">;
+export type _LLVMBuilderRef = Pointer<"_LLVMBuilderRef">;
+export type _LLVMDIBuilderRef = Pointer<"_LLVMDIBuilderRef">;
+export type _LLVMModuleProviderRef = Pointer<"_LLVMModuleProviderRef">;
+export type _LLVMPassManagerRef = Pointer<"_LLVMPassManagerRef">;
+export type _LLVMPassRegistryRef = Pointer<"_LLVMPassRegistryRef">;
+export type _LLVMUseRef = Pointer<"_LLVMUseRef">;
+export type _LLVMAttributeRef = Pointer<"_LLVMAttributeRef">;
+export type _LLVMDiagnosticInfoRef = Pointer<"_LLVMDiagnosticInfoRef">;
+export type _LLVMComdatRef = Pointer<"_LLVMComdatRef">;
+export type _LLVMModuleFlagEntry = Pointer<"_LLVMModuleFlagEntry">;
+export type _LLVMJITEventListenerRef = Pointer<"_LLVMJITEventListenerRef">;
+export type _LLVMBinaryRef = Pointer<"_LLVMBinaryRef">;
+export type _LLVMVerifierFailureAction = Pointer<"_LLVMVerifierFailureAction">;
+export type _LLVMComdatSelectionKind = Pointer<"_LLVMComdatSelectionKind">;
+export type _LLVMFatalErrorHandler = Pointer<"_LLVMFatalErrorHandler">;
+export type _LLVMOpcode = Pointer<"_LLVMOpcode">;
+export type _LLVMTypeKind = Pointer<"_LLVMTypeKind">;
+export type _LLVMLinkage = Pointer<"_LLVMLinkage">;
+export type _LLVMVisibility = Pointer<"_LLVMVisibility">;
+export type _LLVMUnnamedAddr = Pointer<"_LLVMUnnamedAddr">;
+export type _LLVMDLLStorageClass = Pointer<"_LLVMDLLStorageClass">;
+export type _LLVMCallConv = Pointer<"_LLVMCallConv">;
+export type _LLVMValueKind = Pointer<"_LLVMValueKind">;
+export type _LLVMIntPredicate = Pointer<"_LLVMIntPredicate">;
+export type _LLVMRealPredicate = Pointer<"_LLVMRealPredicate">;
+export type _LLVMLandingPadClauseTy = Pointer<"_LLVMLandingPadClauseTy">;
+export type _LLVMThreadLocalMode = Pointer<"_LLVMThreadLocalMode">;
+export type _LLVMAtomicOrdering = Pointer<"_LLVMAtomicOrdering">;
+export type _LLVMAtomicRMWBinOp = Pointer<"_LLVMAtomicRMWBinOp">;
+export type _LLVMDiagnosticSeverity = Pointer<"_LLVMDiagnosticSeverity">;
+export type _LLVMInlineAsmDialect = Pointer<"_LLVMInlineAsmDialect">;
+export type _LLVMModuleFlagBehavior = Pointer<"_LLVMModuleFlagBehavior">;
+export type _LLVMAttributeIndex = Pointer<"_LLVMAttributeIndex">;
+export type _LLVMDiagnosticHandler = Pointer<"_LLVMDiagnosticHandler">;
+export type _LLVMYieldCallback = Pointer<"_LLVMYieldCallback">;
+export type _LLVMDIFlags = Pointer<"_LLVMDIFlags">;
+export type _LLVMDWARFSourceLanguage = Pointer<"_LLVMDWARFSourceLanguage">;
+export type _LLVMDWARFEmissionKind = Pointer<"_LLVMDWARFEmissionKind">;
+export type _LLVMMetadataKind = Pointer<"_LLVMMetadataKind">;
+export type _LLVMDWARFTypeEncoding = Pointer<"_LLVMDWARFTypeEncoding">;
+export type _LLVMDWARFMacinfoRecordType = Pointer<"_LLVMDWARFMacinfoRecordType">;
+export type _LLVMDisasmContextRef = Pointer<"_LLVMDisasmContextRef">;
+export type _LLVMOpInfoCallback = Pointer<"_LLVMOpInfoCallback">;
+export type _LLVMSymbolLookupCallback = Pointer<"_LLVMSymbolLookupCallback">;
+export type _LLVMErrorRef = Pointer<"_LLVMErrorRef">;
+export type _LLVMErrorTypeId = Pointer<"_LLVMErrorTypeId">;
+export type _LLVMTargetDataRef = Pointer<"_LLVMTargetDataRef">;
+export type _LLVMTargetLibraryInfoRef = Pointer<"_LLVMTargetLibraryInfoRef">;
+export type _LLVMTargetMachineRef = Pointer<"_LLVMTargetMachineRef">;
+export type _LLVMTargetRef = Pointer<"_LLVMTargetRef">;
+export type _LLVMCodeGenOptLevel = Pointer<"_LLVMCodeGenOptLevel">;
+export type _LLVMRelocMode = Pointer<"_LLVMRelocMode">;
+export type _LLVMCodeModel = Pointer<"_LLVMCodeModel">;
+export type _LLVMCodeGenFileType = Pointer<"_LLVMCodeGenFileType">;
+export type _LLVMGenericValueRef = Pointer<"_LLVMGenericValueRef">;
+export type _LLVMExecutionEngineRef = Pointer<"_LLVMExecutionEngineRef">;
+export type _LLVMMCJITMemoryManagerRef = Pointer<"_LLVMMCJITMemoryManagerRef">;
+export type _LLVMMemoryManagerAllocateCodeSectionCallback = Pointer<"_LLVMMemoryManagerAllocateCodeSectionCallback">;
+export type _LLVMMemoryManagerAllocateDataSectionCallback = Pointer<"_LLVMMemoryManagerAllocateDataSectionCallback">;
+export type _LLVMMemoryManagerFinalizeMemoryCallback = Pointer<"_LLVMMemoryManagerFinalizeMemoryCallback">;
+export type _LLVMMemoryManagerDestroyCallback = Pointer<"_LLVMMemoryManagerDestroyCallback">;
+export type _LLVMLinkerMode = Pointer<"_LLVMLinkerMode">;
+export type _LLVMSectionIteratorRef = Pointer<"_LLVMSectionIteratorRef">;
+export type _LLVMSymbolIteratorRef = Pointer<"_LLVMSymbolIteratorRef">;
+export type _LLVMRelocationIteratorRef = Pointer<"_LLVMRelocationIteratorRef">;
+export type _LLVMBinaryType = Pointer<"_LLVMBinaryType">;
+export type _LLVMObjectFileRef = Pointer<"_LLVMObjectFileRef">;
 
 export interface Module {
-	HEAPU8: Uint8Array;
-	HEAPU32: Uint32Array;
-	ready(): Promise<Module>
-	_LLVMModuleCreateWithName(name: LLVMStringRef): LLVMModuleRef;
-	_malloc<T>(size: number): Pointer<T>;
-	_free(ptr: Pointer<any>): void;
+  HEAPU8: Uint8Array;
+  HEAPU32: Uint32Array;
+  ready(): Promise<Module>;
+  _LLVMAppendBasicBlock(func: LLVMFuncRef, name: LLVMStringRef): LLVMBasicBlockRef;
+
+  _LLVMBuildAdd(B: LLVMBuilderRef, LHS: LLVMValueRef, RHS: LLVMValueRef, Name: LLVMStringRef): LLVMValueRef
+  _LLVMBuildGlobalStringPtr(builder: LLVMBuilderRef, str: LLVMStringRef, name: LLVMStringRef): LLVMValueRef;
+  _LLVMCreateBuilder(): LLVMBuilderRef;
+  _LLVMConstInt(type: LLVMTypeRef, value: bigint, signExtend: LLVMBool): LLVMValueRef;
+  _LLVMConstReal(type: LLVMTypeRef, value: number): LLVMValueRef;
+  _LLVMConstString(str: LLVMStringRef, len: number, doNotNullTerminate: LLVMBool): LLVMValueRef;
+  _LLVMGetParam(func: LLVMFuncRef, index: number): LLVMValueRef;
+  _LLVMGetPoison(type: LLVMTypeRef): LLVMValueRef;
+  _LLVMInt1Type(): LLVMTypeRef;
+  _LLVMInt8Type(): LLVMTypeRef;
+  _LLVMInt16Type(): LLVMTypeRef;
+  _LLVMInt32Type(): LLVMTypeRef;
+  _LLVMInt64Type(): LLVMTypeRef;
+  _LLVMFloatType(): LLVMTypeRef;
+  _LLVMDoubleType(): LLVMTypeRef;
+  _LLVMVoidType(): LLVMTypeRef;
+  _LLVMAddFunction(mod: LLVMModuleRef, name: LLVMStringRef, funcType: LLVMTypeRef): LLVMFuncRef;
+  _LLVMFunctionType(returnType: LLVMTypeRef, parameterTypes: Pointer<LLVMTypeRef>, count: number, isVarArg: LLVMBool): LLVMTypeRef;
+  _LLVMModuleCreateWithName(name: LLVMStringRef): LLVMModuleRef;
+  _LLVMPositionBuilderAtEnd(builder: LLVMBuilderRef, block: LLVMBasicBlockRef): void;
+  _malloc<T>(size: number): Pointer<T>;
+  _free(ptr: Pointer<any>): void;
 }
 
 export declare function _LLVMVerifyModule(M: _LLVMModuleRef, Action: _LLVMVerifierFailureAction, OutMessage: string[]): _LLVMBool;
@@ -1220,16 +1084,26 @@ export declare function _LLVMParseCommandLineOptions(argc: number, argv: any, Ov
 export declare function _LLVMSearchForAddressOfSymbol(symbolName: string): _void;
 export declare function _LLVMAddSymbol(symbolName: string, symbolValue: any): _void;
 
+
 export function lower(str: string): LLVMStringRef {
-	str += "0";
-	const length = Buffer.byteLength(str);
-	const ptr = LLVM._malloc<{ type: "LLVMStringRef"; }>(length);
-	Buffer.from(LLVM.HEAPU8.buffer, ptr).write(str, "utf-8");
-	return ptr;
+  str += " ";
+  const length = Buffer.byteLength(str);
+  const ptr = LLVM._malloc<"LLVMStringRef">(length);
+  Buffer.from(LLVM.HEAPU8.buffer, ptr).write(str, "utf-8");
+  return ptr;
 }
 
-export function lift(ptr: Pointer<{ type: "LLVMStringRef"; }>): string {
-	const index = LLVM.HEAPU8.indexOf(0, ptr);
-	return Buffer.from(LLVM.HEAPU8.buffer).toString("utf-8", ptr, index);
+export function lift(ptr: Pointer<"LLVMStringRef">): string {
+  const index = LLVM.HEAPU8.indexOf(0, ptr);
+  return Buffer.from(LLVM.HEAPU8.buffer).toString("utf-8", ptr, index);
+}
+
+export function lowerTypeArray(elements: LLVMTypeRef[]): Pointer<LLVMTypeRef> {
+  const elementCount = elements.length;
+  const ptr = LLVM._malloc<LLVMTypeRef>(elementCount << 2);
+  for (let i = 0; i < elementCount; i++) {
+    LLVM.HEAPU32[ptr >>> 2] = elements[i];
+  }
+  return ptr;
 }
 
