@@ -4,6 +4,9 @@ export default llvm as Promise<Module>;
 const LLVM = await (llvm as Promise<Module>);
 export type Pointer<T> = number & T;
 
+export type LLVMStringRef = Pointer<{
+	type: "LLVMStringRef";
+}>;
 export type _LLVMBool = Pointer<{
 	type: "_LLVMBool";
 }>;
