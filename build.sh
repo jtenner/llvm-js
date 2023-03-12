@@ -10,7 +10,7 @@ emcmake cmake \
     -DCMAKE_CXX_FLAGS="-sERROR_ON_UNDEFINED_SYMBOLS=0 -Wno-unused-command-line-argument" \
     -DCMAKE_BUILD_TYPE=Release \
     -GNinja \
-    -S $1/llvm \
+    -S llvm-project/llvm \
     -B build-emscripten
 
 ninja -j8 -C build-emscripten
@@ -20,16 +20,16 @@ node build.mjs
 emcc src/everything.c \
   build-emscripten/lib/libLLVM*.a \
   -s EXPORTED_FUNCTIONS=@llvm.exports \
-  -o build/llvm.mjs \
+  -o build/llvm-wasm.js \
   -s STANDALONE_WASM \
   -I build-emscripten/include \
-  -I $1/llvm/include \
+  -I llvm-project/llvm/include \
   -s ERROR_ON_UNDEFINED_SYMBOLS=0 \
   -sWASM_BIGINT \
   --no-entry \
   -O3
 
-node --experimental-wasm-bigint ./index.mjs
+npx tsc
 
 # em++ \
 #     src/bindings.cpp \

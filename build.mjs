@@ -130,10 +130,19 @@ llvm_exports = llvm_exports.slice(0, llvm_exports.length-1);
 llvm_exports = llvm_exports.concat("]")
 
 //- Header -//
-llvm_ts = llvm_ts.concat(`//@ts-ignore
-import llvm from "./llvm-wasm.mjs";
-export default llvm as Promise<Module>;
-const LLVM = await (llvm as Promise<Module>);
+llvm_ts = llvm_ts.concat(`
+let LLVM!: Module;
+
+async function load() {
+  // @ts-expect-error
+  const llvm = await import("./llvm-wasm.js");
+  await llvm.ready;
+  LLVM = llvm;
+  return llvm;
+}
+
+export default load;
+
 export type Pointer<T> = number & { type: T };\n\n`)
 
 //- LLVM Struct Typings -//
@@ -204,5 +213,5 @@ export function lowerTypeArray(elements: LLVMTypeRef[]): Pointer<LLVMTypeRef> {
 }\n\n`)
 
 //--- Write to respective files ---//
-await writeFile("./build/llvm.ts", llvm_ts);
+await writeFile("./src/index.ts", llvm_ts);
 await writeFile("./llvm.exports", llvm_exports);
