@@ -35,7 +35,7 @@ node --experimental-wasm-bigint ./index.mjs
 #     src/bindings.cpp \
 #     build-emscripten/lib/libLLVM*.a \
 #     -I build-emscripten/include \
-#     -I $PATH/llvm/include \
+#     -I $1/llvm/include \
 #     -lembind \
 #     -o build/bindings.mjs \
 #     -Oz \
