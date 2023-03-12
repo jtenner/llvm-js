@@ -60,12 +60,16 @@ const added = ["_malloc", "_free"];
 const typedefs = new Array();
 const funcs = new Array();
 const type_map = (qualType) => {
+  if(qualType.startsWith("enum")) return "number";
   switch(qualType)
   {
-    case "char **":                            return "LLVMStringRef[]";  break;
+    case "char **":                            return "LLVMStringRef[]"; break;
     case "const char *":                       return "LLVMStringRef"; break;
     case "int":                                return "number"; break;
+    case "long":                               return "number"; break;
+    case "long long":                          return "bigint"; break;
     case "unsigned int *":                     return "Pointer<number>"; break;
+    case "const unsigned int *":                     return "Pointer<number>"; break;
     case "char *":                             return "LLVMStringRef"; break;
     case "void *":                             return "Pointer<any>"; break;
     case "unsigned int":                       return "number"; break;
@@ -75,14 +79,16 @@ const type_map = (qualType) => {
     case "unsigned long long":                 return "bigint"; break;
     case "const uint64_t *":                   return "Pointer<bigint>"; break;
     case "uint8_t":                            return "number"; break;
+    case "uint8_t *":                            return "Pointer<number>"; break;
     case "double":                             return "number"; break;
     case "int64_t":                            return "bigint"; break;
     case "uint32_t":                           return "number"; break;
     case "uint64_t *":                         return "Pointer<bigint>"; break;
-    case "uint8_t":                            return "number"; break;
+    case "uint16_t":                            return "number"; break;
     case "struct LLVMMCJITCompilerOptions *":  return "any"; break;
     case "const char *const *":                return "LLVMStringRef[]"; break;
-    default:  return (qualType.split(' ')[0]); break;
+    case "void":                               return "void"; break;
+    default:  return (qualType.split(' ')[0]);
   }
 }
 
@@ -99,14 +105,15 @@ nodes.forEach(element => {
     if(!filterOut.has(element.name))
       funcs.push(element);
     
-    
     element.params = new Array();
     element.inner?.forEach(e => {
       if(e?.kind != "ParmVarDecl")  return;
 
       element.params.push({name: e.name, type: type_map(e.type.qualType)});
     });
-    element.type = type_map(element.type.qualType);
+    let t = element.type.qualType;
+    
+    element.type = type_map(element.type.qualType.split('(')[0].trim());
   }
 });
 typedefs.splice(typedefs.indexOf("LLVMBool"), 1);
@@ -131,6 +138,7 @@ export type Pointer<T> = number & { type: T };\n\n`)
 
 //- LLVM Struct Typings -//
 llvm_ts = llvm_ts.concat("export type LLVMBool = 1|0;\n");
+llvm_ts = llvm_ts.concat("export type LLVMStringRef = Pointer<\"LLVMStringRef\">;\n");
 typedefs.forEach(element => {
   llvm_ts = llvm_ts.concat("export type " + element + " = Pointer<\"" + element + "\">;\n");
 });
@@ -140,6 +148,8 @@ export interface Module {
   HEAPU8: Uint8Array;
   HEAPU32: Uint32Array;
   ready(): Promise<Module>;
+  _malloc<T>(size: number): Pointer<T>;
+  _free(ptr: Pointer<any>): void;
 `)
 
 //- LLVM Function Typings -//
@@ -148,11 +158,16 @@ funcs.forEach(element => {
 
   func_proto = func_proto.concat("  "+element.name + "(");
   
-  element.params.forEach(param => {
-    func_proto = func_proto.concat(param.name + ": " + param.type + ", ");
+  element.params.forEach((param, index) => {
+    let name = param.name;
+    if(name == undefined)
+      name = "x"+index;
+
+    func_proto = func_proto.concat(name + ": " + param.type + ", ");
   });
   if(element.params.length > 0) func_proto = func_proto.slice(0, func_proto.length-2);
-  func_proto = func_proto.concat("): " + element.type+";\n");
+  
+  func_proto = func_proto.concat("): " + element.type + ";\n");
   llvm_ts = llvm_ts.concat(func_proto);
 });
 llvm_ts = llvm_ts.concat("}\n");
@@ -182,5 +197,5 @@ export function lowerTypeArray(elements: LLVMTypeRef[]): Pointer<LLVMTypeRef> {
 }\n\n`)
 
 //--- Write to respective files ---//
-await writeFile("./build/llvm.d.ts", llvm_ts);
+await writeFile("./build/llvm.ts", llvm_ts);
 await writeFile("./llvm.exports", llvm_exports);
