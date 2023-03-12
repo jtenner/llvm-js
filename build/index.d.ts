@@ -1055,5 +1055,5 @@ export interface Module {
 }
 export declare function lower(str: string): LLVMStringRef;
 export declare function lift(ptr: Pointer<"LLVMStringRef">): string;
-export declare function lowerTypeArray(elements: LLVMTypeRef[]): Pointer<LLVMTypeRef[]>;
+export declare function lowerPointerArray<T extends number>(elements: T[]): Pointer<T[]>;
 //# sourceMappingURL=index.d.ts.map

@@ -32,7 +32,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.lowerTypeArray = exports.lift = exports.lower = exports.load = void 0;
+exports.lowerPointerArray = exports.lift = exports.lower = exports.load = void 0;
 let LLVM;
 function load() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -57,7 +57,7 @@ function lift(ptr) {
     return Buffer.from(LLVM.HEAPU8.buffer).toString("utf-8", ptr, index);
 }
 exports.lift = lift;
-function lowerTypeArray(elements) {
+function lowerPointerArray(elements) {
     const elementCount = elements.length;
     const ptr = LLVM._malloc(elementCount << 2);
     for (let i = 0; i < elementCount; i++) {
@@ -65,5 +65,5 @@ function lowerTypeArray(elements) {
     }
     return ptr;
 }
-exports.lowerTypeArray = lowerTypeArray;
+exports.lowerPointerArray = lowerPointerArray;
 //# sourceMappingURL=index.js.map

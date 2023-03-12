@@ -202,9 +202,9 @@ export function lift(ptr: Pointer<"LLVMStringRef">): string {
   return Buffer.from(LLVM.HEAPU8.buffer).toString("utf-8", ptr, index);
 }
 
-export function lowerTypeArray(elements: LLVMTypeRef[]): Pointer<LLVMTypeRef[]> {
+export function lowerPointerArray<T extends number>(elements: T[]): Pointer<T[]> {
   const elementCount = elements.length;
-  const ptr = LLVM._malloc<LLVMTypeRef[]>(elementCount << 2);
+  const ptr = LLVM._malloc<T[]>(elementCount << 2);
   for (let i = 0; i < elementCount; i++) {
     LLVM.HEAPU32[ptr >>> 2] = elements[i];
   }
