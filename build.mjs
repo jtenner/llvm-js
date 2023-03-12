@@ -62,12 +62,12 @@ const funcs = new Array();
 const type_map = (qualType) => {
   switch(qualType)
   {
-    case "char **":                            return "string[]";  break;
-    case "const char *":                       return "string"; break;
+    case "char **":                            return "any";  break;
+    case "const char *":                       return "LLVMStringRef"; break;
     case "int":                                return "number"; break;
     case "unsigned int *":                     return "any"; break;
-    case "char *":                             return "any"; break;
-    case "void *":                             return "any"; break;
+    case "char *":                             return "LLVMStringRef"; break;
+    case "void *":                             return "Pointer<any>"; break;
     case "unsigned int":                       return "number"; break;
     case "size_t":                             return "number"; break;
     case "uint64_t":                           return "number"; break;
@@ -76,7 +76,7 @@ const type_map = (qualType) => {
     case "const uint64_t *":                   return "any"; break;
     case "uint8_t":                            return "number"; break;
     case "double":                             return "number"; break;
-    case "int64_t":                            return "number"; break;
+    case "int64_t":                            return "bigint"; break;
     case "uint32_t":                           return "number"; break;
     case "uint64_t *":                         return "any"; break;
     case "uint8_t":                            return "number"; break;
@@ -140,37 +140,13 @@ export interface Module {
   HEAPU8: Uint8Array;
   HEAPU32: Uint32Array;
   ready(): Promise<Module>;
-  _LLVMAppendBasicBlock(func: LLVMFuncRef, name: LLVMStringRef): LLVMBasicBlockRef;
-
-  _LLVMBuildAdd(B: LLVMBuilderRef, LHS: LLVMValueRef, RHS: LLVMValueRef, Name: LLVMStringRef): LLVMValueRef
-  _LLVMBuildGlobalStringPtr(builder: LLVMBuilderRef, str: LLVMStringRef, name: LLVMStringRef): LLVMValueRef;
-  _LLVMCreateBuilder(): LLVMBuilderRef;
-  _LLVMConstInt(type: LLVMTypeRef, value: bigint, signExtend: LLVMBool): LLVMValueRef;
-  _LLVMConstReal(type: LLVMTypeRef, value: number): LLVMValueRef;
-  _LLVMConstString(str: LLVMStringRef, len: number, doNotNullTerminate: LLVMBool): LLVMValueRef;
-  _LLVMGetParam(func: LLVMFuncRef, index: number): LLVMValueRef;
-  _LLVMGetPoison(type: LLVMTypeRef): LLVMValueRef;
-  _LLVMInt1Type(): LLVMTypeRef;
-  _LLVMInt8Type(): LLVMTypeRef;
-  _LLVMInt16Type(): LLVMTypeRef;
-  _LLVMInt32Type(): LLVMTypeRef;
-  _LLVMInt64Type(): LLVMTypeRef;
-  _LLVMFloatType(): LLVMTypeRef;
-  _LLVMDoubleType(): LLVMTypeRef;
-  _LLVMVoidType(): LLVMTypeRef;
-  _LLVMAddFunction(mod: LLVMModuleRef, name: LLVMStringRef, funcType: LLVMTypeRef): LLVMFuncRef;
-  _LLVMFunctionType(returnType: LLVMTypeRef, parameterTypes: Pointer<LLVMTypeRef>, count: number, isVarArg: LLVMBool): LLVMTypeRef;
-  _LLVMModuleCreateWithName(name: LLVMStringRef): LLVMModuleRef;
-  _LLVMPositionBuilderAtEnd(builder: LLVMBuilderRef, block: LLVMBasicBlockRef): void;
-  _malloc<T>(size: number): Pointer<T>;
-  _free(ptr: Pointer<any>): void;
-}\n\n`)
+`)
 
 //- LLVM Function Typings -//
 funcs.forEach(element => {
   let func_proto = "";
 
-  func_proto = func_proto.concat("export declare function " + element.name + "(");
+  func_proto = func_proto.concat("  "+element.name + "(");
   
   element.params.forEach(param => {
     func_proto = func_proto.concat(param.name + ": " + param.type + ", ");
@@ -179,12 +155,12 @@ funcs.forEach(element => {
   func_proto = func_proto.concat("): " + element.type+";\n");
   llvm_ts = llvm_ts.concat(func_proto);
 });
-llvm_ts = llvm_ts.concat("\n");
+llvm_ts = llvm_ts.concat("}\n");
 
 //- Lifting/lowering -//
 llvm_ts = llvm_ts.concat(`
 export function lower(str: string): LLVMStringRef {
-  str += "\0";
+  str += "0";
   const length = Buffer.byteLength(str);
   const ptr = LLVM._malloc<"LLVMStringRef">(length);
   Buffer.from(LLVM.HEAPU8.buffer, ptr).write(str, "utf-8");
