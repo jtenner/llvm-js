@@ -65,23 +65,23 @@ const type_map = (qualType) => {
     case "char **":                            return "LLVMStringRef[]";  break;
     case "const char *":                       return "LLVMStringRef"; break;
     case "int":                                return "number"; break;
-    case "unsigned int *":                     return "any"; break;
+    case "unsigned int *":                     return "Pointer<number>"; break;
     case "char *":                             return "LLVMStringRef"; break;
     case "void *":                             return "Pointer<any>"; break;
     case "unsigned int":                       return "number"; break;
     case "size_t":                             return "number"; break;
     case "uint64_t":                           return "number"; break;
-    case "size_t *":                           return "any"; break;
-    case "unsigned long long":                 return "number"; break;
-    case "const uint64_t *":                   return "any"; break;
+    case "size_t *":                           return "Pointer<number>"; break;
+    case "unsigned long long":                 return "bigint"; break;
+    case "const uint64_t *":                   return "Pointer<bigint>"; break;
     case "uint8_t":                            return "number"; break;
     case "double":                             return "number"; break;
     case "int64_t":                            return "bigint"; break;
     case "uint32_t":                           return "number"; break;
-    case "uint64_t *":                         return "any"; break;
+    case "uint64_t *":                         return "Pointer<bigint>"; break;
     case "uint8_t":                            return "number"; break;
     case "struct LLVMMCJITCompilerOptions *":  return "any"; break;
-    case "const char *const *":                return "any"; break;
+    case "const char *const *":                return "LLVMStringRef[]"; break;
     default:  return (qualType.split(' ')[0]); break;
   }
 }
