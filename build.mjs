@@ -63,13 +63,13 @@ const type_map = (qualType) => {
   if(qualType.startsWith("enum")) return "number";
   switch(qualType)
   {
-    case "char **":                            return "LLVMStringRef[]"; break;
+    case "char **":                            return "Pointer<LLVMStringRef[]>"; break;
     case "const char *":                       return "LLVMStringRef"; break;
     case "int":                                return "number"; break;
     case "long":                               return "number"; break;
     case "long long":                          return "bigint"; break;
     case "unsigned int *":                     return "Pointer<number>"; break;
-    case "const unsigned int *":                     return "Pointer<number>"; break;
+    case "const unsigned int *":               return "Pointer<number>"; break;
     case "char *":                             return "LLVMStringRef"; break;
     case "void *":                             return "Pointer<any>"; break;
     case "unsigned int":                       return "number"; break;
@@ -79,16 +79,18 @@ const type_map = (qualType) => {
     case "unsigned long long":                 return "bigint"; break;
     case "const uint64_t *":                   return "Pointer<bigint>"; break;
     case "uint8_t":                            return "number"; break;
-    case "uint8_t *":                            return "Pointer<number>"; break;
+    case "uint8_t *":                          return "Pointer<number>"; break;
     case "double":                             return "number"; break;
     case "int64_t":                            return "bigint"; break;
     case "uint32_t":                           return "number"; break;
     case "uint64_t *":                         return "Pointer<bigint>"; break;
-    case "uint16_t":                            return "number"; break;
+    case "uint16_t":                           return "number"; break;
     case "struct LLVMMCJITCompilerOptions *":  return "any"; break;
-    case "const char *const *":                return "LLVMStringRef[]"; break;
+    case "const char *const *":                return "Pointer<LLVMStringRef[]>"; break;
     case "void":                               return "void"; break;
-    default:  return (qualType.split(' ')[0]);
+    default:  {
+      return qualType.endsWith("*") ? `Pointer<${qualType.split(' ')[0]}[]>` : qualType.split(' ')[0];
+    }
   }
 }
 
@@ -176,7 +178,6 @@ funcs.forEach(element => {
     else if(name == "B")  name = "Builder";
     else if(name == "C")  name = "Context";
     else if(name == "M")  name = "Module";
-
     func_proto = func_proto.concat(name + ": " + param.type + ", ");
   });
   if(element.params.length > 0) func_proto = func_proto.slice(0, func_proto.length-2);
@@ -201,9 +202,9 @@ export function lift(ptr: Pointer<"LLVMStringRef">): string {
   return Buffer.from(LLVM.HEAPU8.buffer).toString("utf-8", ptr, index);
 }
 
-export function lowerTypeArray(elements: LLVMTypeRef[]): Pointer<LLVMTypeRef> {
+export function lowerTypeArray(elements: LLVMTypeRef[]): Pointer<LLVMTypeRef[]> {
   const elementCount = elements.length;
-  const ptr = LLVM._malloc<LLVMTypeRef>(elementCount << 2);
+  const ptr = LLVM._malloc<LLVMTypeRef[]>(elementCount << 2);
   for (let i = 0; i < elementCount; i++) {
     LLVM.HEAPU32[ptr >>> 2] = elements[i];
   }
