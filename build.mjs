@@ -161,7 +161,14 @@ funcs.forEach(element => {
   element.params.forEach((param, index) => {
     let name = param.name;
     if(name == undefined)
-      name = "x"+index;
+    {
+      if(index == 0)  name = "Builder";
+      else if(index == 1) name = "Type";
+      else name = "x"+index;
+    }
+    else if(name == "B")  name = "Builder";
+    else if(name == "C")  name = "Context";
+    else if(name == "M")  name = "Module";
 
     func_proto = func_proto.concat(name + ": " + param.type + ", ");
   });
