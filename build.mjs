@@ -138,9 +138,9 @@ let LLVM!: Module;
 export async function load(): Promise<Module> {
   // @ts-expect-error
   const llvm = await import("./llvm-wasm.js");
-  await llvm.ready;
-  LLVM = llvm;
-  return llvm;
+  await llvm.default.ready;
+  LLVM = llvm.default;
+  return LLVM;
 }
 
 export type Pointer<T> = number & { type: T };\n\n`)

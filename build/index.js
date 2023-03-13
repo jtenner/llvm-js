@@ -5,9 +5,9 @@ let LLVM;
 async function load() {
     // @ts-expect-error
     const llvm = await import("./llvm-wasm.js");
-    await llvm.ready;
-    LLVM = llvm;
-    return llvm;
+    await llvm.default.ready;
+    LLVM = llvm.default;
+    return LLVM;
 }
 exports.load = load;
 function lower(str) {

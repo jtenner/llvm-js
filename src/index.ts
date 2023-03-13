@@ -4,9 +4,9 @@ let LLVM!: Module;
 export async function load(): Promise<Module> {
   // @ts-expect-error
   const llvm = await import("./llvm-wasm.js");
-  await llvm.ready;
-  LLVM = llvm;
-  return llvm;
+  await llvm.default.ready;
+  LLVM = llvm.default;
+  return LLVM;
 }
 
 export type Pointer<T> = number & { type: T };
@@ -93,7 +93,7 @@ export type LLVMObjectFileRef = Pointer<"LLVMObjectFileRef">;
 export interface Module {
   HEAPU8: Uint8Array;
   HEAPU32: Uint32Array;
-  ready(): Promise<Module>;
+  ready: Promise<Module>;
   _malloc<T>(size: number): Pointer<T>;
   _free(ptr: Pointer<any>): void;
   _LLVMVerifyModule(Module: LLVMModuleRef, Action: LLVMVerifierFailureAction, OutMessage: Pointer<LLVMStringRef[]>): LLVMBool;
