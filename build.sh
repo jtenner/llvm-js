@@ -20,7 +20,7 @@ node build.mjs
 emcc src/everything.c \
   build-emscripten/lib/libLLVM*.a \
   -s EXPORTED_FUNCTIONS=@llvm.exports \
-  -o build/llvm-wasm.js \
+  -o build/llvm-wasm.mjs \
   -s STANDALONE_WASM \
   -I build-emscripten/include \
   -I llvm-project/llvm/include \

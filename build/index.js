@@ -1,29 +1,23 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.lowerPointerArray = exports.lift = exports.lower = exports.load = void 0;
 let LLVM;
-async function load() {
+export async function load() {
     // @ts-expect-error
-    const llvm = await import("./llvm-wasm.js");
-    await llvm.default.ready;
-    LLVM = llvm.default;
-    return LLVM;
+    const llvm = await import("./llvm-wasm.mjs");
+    const mod = await llvm.default();
+    LLVM = mod;
+    return mod;
 }
-exports.load = load;
-function lower(str) {
+export function lower(str) {
     str += "0";
     const length = Buffer.byteLength(str);
     const ptr = LLVM._malloc(length);
     Buffer.from(LLVM.HEAPU8.buffer, ptr).write(str, "utf-8");
     return ptr;
 }
-exports.lower = lower;
-function lift(ptr) {
+export function lift(ptr) {
     const index = LLVM.HEAPU8.indexOf(0, ptr);
     return Buffer.from(LLVM.HEAPU8.buffer).toString("utf-8", ptr, index);
 }
-exports.lift = lift;
-function lowerPointerArray(elements) {
+export function lowerPointerArray(elements) {
     const elementCount = elements.length;
     const ptr = LLVM._malloc(elementCount << 2);
     for (let i = 0; i < elementCount; i++) {
@@ -31,5 +25,4 @@ function lowerPointerArray(elements) {
     }
     return ptr;
 }
-exports.lowerPointerArray = lowerPointerArray;
 //# sourceMappingURL=index.js.map

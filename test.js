@@ -1,9 +1,9 @@
 async function main() {
   const myMod = await import("./build/index.js");
-
-  const loaded = await myMod.load();
-  console.log("Testing!");
-  console.log(loaded);
+  const llvm = await myMod.load();
+  console.log(llvm._malloc(2000))
+  console.log(llvm._malloc(2000))
+  console.log(llvm._malloc(2000))
 }
 
 
