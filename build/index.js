@@ -20,8 +20,9 @@ export function lift(ptr) {
 export function lowerPointerArray(elements) {
     const elementCount = elements.length;
     const ptr = LLVM._malloc(elementCount << 2);
+    const index = ptr >>> 2;
     for (let i = 0; i < elementCount; i++) {
-        LLVM.HEAPU32[ptr >>> 2] = elements[i];
+        LLVM.HEAPU32[index + i] = elements[i];
     }
     return ptr;
 }

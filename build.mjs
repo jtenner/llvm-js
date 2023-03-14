@@ -136,6 +136,7 @@ llvm_ts = llvm_ts.concat(`
 let LLVM!: Module;
 
 export async function load(): Promise<Module> {
+  // @ts-expect-error
   const llvm = await import("./llvm-wasm.mjs");
   const mod = await llvm.default();
   LLVM = mod;
@@ -204,8 +205,9 @@ export function lift(ptr: Pointer<"LLVMStringRef">): string {
 export function lowerPointerArray<T extends number>(elements: T[]): Pointer<T[]> {
   const elementCount = elements.length;
   const ptr = LLVM._malloc<T[]>(elementCount << 2);
+  const index = ptr >>> 2;
   for (let i = 0; i < elementCount; i++) {
-    LLVM.HEAPU32[ptr >>> 2] = elements[i];
+    LLVM.HEAPU32[index + i] = elements[i];
   }
   return ptr;
 }\n\n`)
