@@ -1065,7 +1065,7 @@ export interface Module {
 }
 
 export function lower(str: string): LLVMStringRef {
-  str += "0";
+  str += "\0";
   const length = Buffer.byteLength(str);
   const ptr = LLVM._malloc<"LLVMStringRef">(length);
   Buffer.from(LLVM.HEAPU8.buffer, ptr).write(str, "utf-8");

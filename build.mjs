@@ -190,7 +190,7 @@ llvm_ts = llvm_ts.concat("}\n");
 //- Lifting/lowering -//
 llvm_ts = llvm_ts.concat(`
 export function lower(str: string): LLVMStringRef {
-  str += "0";
+  str += "\\0";
   const length = Buffer.byteLength(str);
   const ptr = LLVM._malloc<"LLVMStringRef">(length);
   Buffer.from(LLVM.HEAPU8.buffer, ptr).write(str, "utf-8");

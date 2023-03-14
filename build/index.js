@@ -7,7 +7,7 @@ export async function load() {
     return mod;
 }
 export function lower(str) {
-    str += "0";
+    str += "\0";
     const length = Buffer.byteLength(str);
     const ptr = LLVM._malloc(length);
     Buffer.from(LLVM.HEAPU8.buffer, ptr).write(str, "utf-8");
