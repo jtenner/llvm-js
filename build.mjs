@@ -161,6 +161,16 @@ export interface Module {
   _free(ptr: Pointer<any>): void;
 `)
 
+funcs.sort(function (a, b) {
+  if (a.name < b.name) {
+    return -1;
+  }
+  if (a.name > b.name) {
+    return 1;
+  }
+  return 0;
+});
+
 //- LLVM Function Typings -//
 funcs.forEach(element => {
   let func_proto = "";
