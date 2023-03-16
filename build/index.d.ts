@@ -4,6 +4,44 @@ export type Pointer<T> = number & {
 };
 export type LLVMBool = 1 | 0;
 export type LLVMStringRef = Pointer<"LLVMStringRef">;
+export declare enum LLVMIntPredicate {
+    Eq = 32,
+    Ne = 33,
+    Ugt = 34,
+    Uge = 35,
+    Ult = 36,
+    Ule = 37,
+    Sgt = 38,
+    Sge = 39,
+    Slt = 40,
+    Sle = 41
+}
+export declare enum LLVMRealPredicate {
+    Predicatefalse = 0,
+    Oeq = 1,
+    Ogt = 2,
+    Oge = 3,
+    Olt = 4,
+    Ole = 5,
+    One = 6,
+    Ord = 7,
+    Uno = 8,
+    Ueq = 9,
+    Ugt = 10,
+    Uge = 11,
+    Ult = 12,
+    Ule = 13,
+    Une = 14,
+    Predicatetrue = 15
+}
+export declare enum LLVMModuleFlagBehavior {
+    Error = 0,
+    Warning = 1,
+    Require = 2,
+    Override = 3,
+    Append = 4,
+    Appendunique = 5
+}
 export type LLVMMemoryBufferRef = Pointer<"LLVMMemoryBufferRef">;
 export type LLVMContextRef = Pointer<"LLVMContextRef">;
 export type LLVMModuleRef = Pointer<"LLVMModuleRef">;
@@ -36,15 +74,12 @@ export type LLVMUnnamedAddr = Pointer<"LLVMUnnamedAddr">;
 export type LLVMDLLStorageClass = Pointer<"LLVMDLLStorageClass">;
 export type LLVMCallConv = Pointer<"LLVMCallConv">;
 export type LLVMValueKind = Pointer<"LLVMValueKind">;
-export type LLVMIntPredicate = Pointer<"LLVMIntPredicate">;
-export type LLVMRealPredicate = Pointer<"LLVMRealPredicate">;
 export type LLVMLandingPadClauseTy = Pointer<"LLVMLandingPadClauseTy">;
 export type LLVMThreadLocalMode = Pointer<"LLVMThreadLocalMode">;
 export type LLVMAtomicOrdering = Pointer<"LLVMAtomicOrdering">;
 export type LLVMAtomicRMWBinOp = Pointer<"LLVMAtomicRMWBinOp">;
 export type LLVMDiagnosticSeverity = Pointer<"LLVMDiagnosticSeverity">;
 export type LLVMInlineAsmDialect = Pointer<"LLVMInlineAsmDialect">;
-export type LLVMModuleFlagBehavior = Pointer<"LLVMModuleFlagBehavior">;
 export type LLVMAttributeIndex = Pointer<"LLVMAttributeIndex">;
 export type LLVMDiagnosticHandler = Pointer<"LLVMDiagnosticHandler">;
 export type LLVMYieldCallback = Pointer<"LLVMYieldCallback">;

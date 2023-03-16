@@ -118,7 +118,11 @@ nodes.forEach(element => {
     element.type = type_map(element.type.qualType.split('(')[0].trim());
   }
 });
+
 typedefs.splice(typedefs.indexOf("LLVMBool"), 1);
+typedefs.splice(typedefs.indexOf("LLVMRealPredicate"), 1);
+typedefs.splice(typedefs.indexOf("LLVMIntPredicate"), 1);
+typedefs.splice(typedefs.indexOf("LLVMModuleFlagBehavior"), 1);
 
 //--- Write Bindings and Typings ---//
 let llvm_ts = "";
@@ -148,6 +152,54 @@ export type Pointer<T> = number & { type: T };\n\n`)
 //- LLVM Struct Typings -//
 llvm_ts = llvm_ts.concat("export type LLVMBool = 1|0;\n");
 llvm_ts = llvm_ts.concat("export type LLVMStringRef = Pointer<\"LLVMStringRef\">;\n");
+llvm_ts = llvm_ts.concat(`
+export enum LLVMIntPredicate {
+  Eq = 32,
+  Ne = 33,
+  Ugt = 34,
+  Uge = 35,
+  Ult = 36,
+  Ule = 37,
+  Sgt = 38,
+  Sge = 39,
+  Slt = 40,
+  Sle = 41,
+}
+`);
+llvm_ts = llvm_ts.concat(`
+export enum LLVMRealPredicate
+{
+  Predicatefalse = 0,
+  Oeq = 1,
+  Ogt = 2,
+  Oge = 3,
+  Olt = 4,
+  Ole = 5,
+  One = 6,
+  Ord = 7,
+  Uno = 8,
+  Ueq = 9,
+  Ugt = 10,
+  Uge = 11,
+  Ult = 12,
+  Ule = 13,
+  Une = 14,
+  Predicatetrue = 15,
+}
+`);
+
+llvm_ts = llvm_ts.concat(`
+export enum LLVMModuleFlagBehavior
+{
+  Error = 0,
+  Warning = 1,
+  Require = 2,
+  Override = 3,
+  Append = 4,
+  Appendunique = 5,
+}
+`);
+
 typedefs.forEach(element => {
   llvm_ts = llvm_ts.concat("export type " + element + " = Pointer<\"" + element + "\">;\n");
 });
