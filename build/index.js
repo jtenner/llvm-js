@@ -47,6 +47,38 @@ export var LLVMModuleFlagBehavior;
     LLVMModuleFlagBehavior[LLVMModuleFlagBehavior["Append"] = 4] = "Append";
     LLVMModuleFlagBehavior[LLVMModuleFlagBehavior["Appendunique"] = 5] = "Appendunique";
 })(LLVMModuleFlagBehavior = LLVMModuleFlagBehavior || (LLVMModuleFlagBehavior = {}));
+export var LLVMCodeGenFileType;
+(function (LLVMCodeGenFileType) {
+    LLVMCodeGenFileType[LLVMCodeGenFileType["LLVMAssemblyFile"] = 0] = "LLVMAssemblyFile";
+    LLVMCodeGenFileType[LLVMCodeGenFileType["LLVMObjectFile"] = 1] = "LLVMObjectFile";
+})(LLVMCodeGenFileType = LLVMCodeGenFileType || (LLVMCodeGenFileType = {}));
+export var LLVMCodeModel;
+(function (LLVMCodeModel) {
+    LLVMCodeModel[LLVMCodeModel["LLVMCodeModelDefault"] = 0] = "LLVMCodeModelDefault";
+    LLVMCodeModel[LLVMCodeModel["LLVMCodeModelJITDefault"] = 1] = "LLVMCodeModelJITDefault";
+    LLVMCodeModel[LLVMCodeModel["LLVMCodeModelTiny"] = 2] = "LLVMCodeModelTiny";
+    LLVMCodeModel[LLVMCodeModel["LLVMCodeModelSmall"] = 3] = "LLVMCodeModelSmall";
+    LLVMCodeModel[LLVMCodeModel["LLVMCodeModelKernel"] = 4] = "LLVMCodeModelKernel";
+    LLVMCodeModel[LLVMCodeModel["LLVMCodeModelMedium"] = 5] = "LLVMCodeModelMedium";
+    LLVMCodeModel[LLVMCodeModel["LLVMCodeModelLarge"] = 6] = "LLVMCodeModelLarge";
+})(LLVMCodeModel = LLVMCodeModel || (LLVMCodeModel = {}));
+export var LLVMCodeGenOptLevel;
+(function (LLVMCodeGenOptLevel) {
+    LLVMCodeGenOptLevel[LLVMCodeGenOptLevel["LLVMCodeGenLevelNone"] = 0] = "LLVMCodeGenLevelNone";
+    LLVMCodeGenOptLevel[LLVMCodeGenOptLevel["LLVMCodeGenLevelLess"] = 1] = "LLVMCodeGenLevelLess";
+    LLVMCodeGenOptLevel[LLVMCodeGenOptLevel["LLVMCodeGenLevelDefault"] = 2] = "LLVMCodeGenLevelDefault";
+    LLVMCodeGenOptLevel[LLVMCodeGenOptLevel["LLVMCodeGenLevelAggressive"] = 3] = "LLVMCodeGenLevelAggressive";
+})(LLVMCodeGenOptLevel = LLVMCodeGenOptLevel || (LLVMCodeGenOptLevel = {}));
+export var LLVMRelocMode;
+(function (LLVMRelocMode) {
+    LLVMRelocMode[LLVMRelocMode["LLVMRelocDefault"] = 0] = "LLVMRelocDefault";
+    LLVMRelocMode[LLVMRelocMode["LLVMRelocStatic"] = 1] = "LLVMRelocStatic";
+    LLVMRelocMode[LLVMRelocMode["LLVMRelocPIC"] = 2] = "LLVMRelocPIC";
+    LLVMRelocMode[LLVMRelocMode["LLVMRelocDynamicNoPic"] = 3] = "LLVMRelocDynamicNoPic";
+    LLVMRelocMode[LLVMRelocMode["LLVMRelocROPI"] = 4] = "LLVMRelocROPI";
+    LLVMRelocMode[LLVMRelocMode["LLVMRelocRWPI"] = 5] = "LLVMRelocRWPI";
+    LLVMRelocMode[LLVMRelocMode["LLVMRelocROPI_RWPI"] = 6] = "LLVMRelocROPI_RWPI";
+})(LLVMRelocMode = LLVMRelocMode || (LLVMRelocMode = {}));
 export function lower(str) {
     str += "\0";
     const length = Buffer.byteLength(str);

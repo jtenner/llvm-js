@@ -123,6 +123,10 @@ typedefs.splice(typedefs.indexOf("LLVMBool"), 1);
 typedefs.splice(typedefs.indexOf("LLVMRealPredicate"), 1);
 typedefs.splice(typedefs.indexOf("LLVMIntPredicate"), 1);
 typedefs.splice(typedefs.indexOf("LLVMModuleFlagBehavior"), 1);
+typedefs.splice(typedefs.indexOf("LLVMCodeGenFileType"), 1);
+typedefs.splice(typedefs.indexOf("LLVMCodeModel"), 1);
+typedefs.splice(typedefs.indexOf("LLVMCodeGenOptLevel"), 1);
+typedefs.splice(typedefs.indexOf("LLVMRelocMode"), 1);
 
 //--- Write Bindings and Typings ---//
 let llvm_ts = "";
@@ -197,6 +201,46 @@ export enum LLVMModuleFlagBehavior
   Override = 3,
   Append = 4,
   Appendunique = 5,
+}
+`);
+
+llvm_ts = llvm_ts.concat(`
+export enum LLVMCodeGenFileType{
+  LLVMAssemblyFile,
+  LLVMObjectFile
+}
+`);
+
+llvm_ts = llvm_ts.concat(`
+export enum LLVMCodeModel {
+  LLVMCodeModelDefault,
+  LLVMCodeModelJITDefault,
+  LLVMCodeModelTiny,
+  LLVMCodeModelSmall,
+  LLVMCodeModelKernel,
+  LLVMCodeModelMedium,
+  LLVMCodeModelLarge
+}
+`);
+
+llvm_ts = llvm_ts.concat(`
+export enum LLVMCodeGenOptLevel {
+  LLVMCodeGenLevelNone,
+  LLVMCodeGenLevelLess,
+  LLVMCodeGenLevelDefault,
+  LLVMCodeGenLevelAggressive
+}
+`);
+
+llvm_ts = llvm_ts.concat(`
+export enum LLVMRelocMode {
+  LLVMRelocDefault,
+  LLVMRelocStatic,
+  LLVMRelocPIC,
+  LLVMRelocDynamicNoPic,
+  LLVMRelocROPI,
+  LLVMRelocRWPI,
+  LLVMRelocROPI_RWPI
 }
 `);
 

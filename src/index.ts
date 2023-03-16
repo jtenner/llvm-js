@@ -56,6 +56,38 @@ export enum LLVMModuleFlagBehavior
   Append = 4,
   Appendunique = 5,
 }
+
+export enum LLVMCodeGenFileType{
+  LLVMAssemblyFile,
+  LLVMObjectFile
+}
+
+export enum LLVMCodeModel {
+  LLVMCodeModelDefault,
+  LLVMCodeModelJITDefault,
+  LLVMCodeModelTiny,
+  LLVMCodeModelSmall,
+  LLVMCodeModelKernel,
+  LLVMCodeModelMedium,
+  LLVMCodeModelLarge
+}
+
+export enum LLVMCodeGenOptLevel {
+  LLVMCodeGenLevelNone,
+  LLVMCodeGenLevelLess,
+  LLVMCodeGenLevelDefault,
+  LLVMCodeGenLevelAggressive
+}
+
+export enum LLVMRelocMode {
+  LLVMRelocDefault,
+  LLVMRelocStatic,
+  LLVMRelocPIC,
+  LLVMRelocDynamicNoPic,
+  LLVMRelocROPI,
+  LLVMRelocRWPI,
+  LLVMRelocROPI_RWPI
+}
 export type LLVMMemoryBufferRef = Pointer<"LLVMMemoryBufferRef">;
 export type LLVMContextRef = Pointer<"LLVMContextRef">;
 export type LLVMModuleRef = Pointer<"LLVMModuleRef">;
@@ -112,10 +144,6 @@ export type LLVMTargetDataRef = Pointer<"LLVMTargetDataRef">;
 export type LLVMTargetLibraryInfoRef = Pointer<"LLVMTargetLibraryInfoRef">;
 export type LLVMTargetMachineRef = Pointer<"LLVMTargetMachineRef">;
 export type LLVMTargetRef = Pointer<"LLVMTargetRef">;
-export type LLVMCodeGenOptLevel = Pointer<"LLVMCodeGenOptLevel">;
-export type LLVMRelocMode = Pointer<"LLVMRelocMode">;
-export type LLVMCodeModel = Pointer<"LLVMCodeModel">;
-export type LLVMCodeGenFileType = Pointer<"LLVMCodeGenFileType">;
 export type LLVMGenericValueRef = Pointer<"LLVMGenericValueRef">;
 export type LLVMExecutionEngineRef = Pointer<"LLVMExecutionEngineRef">;
 export type LLVMMCJITMemoryManagerRef = Pointer<"LLVMMCJITMemoryManagerRef">;
