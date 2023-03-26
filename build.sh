@@ -5,15 +5,22 @@ set -e
 emcmake cmake \
     -Wno-dev \
     -DLLVM_TARGETS_TO_BUILD=WebAssembly \
-    -DLLVM_BUILD_TOOLS=OFF \
     -DLLVM_ENABLE_PROJECTS=lld \
-    -DCMAKE_CXX_FLAGS="-sERROR_ON_UNDEFINED_SYMBOLS=0 -Wno-unused-command-line-argument" \
+    -DCMAKE_CXX_FLAGS="-sERROR_ON_UNDEFINED_SYMBOLS=0 -Wno-unused-command-line-argument -sINVOKE_RUN=0 -sEXPORTED_FUNCTIONS=_main,_malloc,_free -sEXPORTED_RUNTIME_METHODS=FS,stringToUTF8,UTF8ToString --oformat=mjs" \
     -DCMAKE_BUILD_TYPE=Release \
     -GNinja \
     -S llvm-project/llvm \
     -B build-emscripten
 
-ninja -j8 -C build-emscripten
+ninja -C build-emscripten
+
+find build-emscripten/bin \
+    -type f \
+    '(' \
+        -path '*.wasm' -or \
+        -path '*.js' \
+    ')' \
+    -exec cp '{}' build ';'
 
 node build.mjs
 
