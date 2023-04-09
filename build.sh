@@ -26,6 +26,8 @@ node build.mjs
 
 emcc src/everything.c \
   build-emscripten/lib/libLLVM*.a \
+  build-emscripten/lib/liblld*.a \
+  build-emscripten/lib/libLTO.a \
   -s EXPORTED_FUNCTIONS=@llvm.exports \
   -o build/llvm-wasm.mjs \
   -s STANDALONE_WASM \
@@ -37,16 +39,3 @@ emcc src/everything.c \
   -O3
 
 npx tsc
-
-# em++ \
-#     src/bindings.cpp \
-#     build-emscripten/lib/libLLVM*.a \
-#     -I build-emscripten/include \
-#     -I $1/llvm/include \
-#     -lembind \
-#     -o build/bindings.mjs \
-#     -Oz \
-#     -sWASM_BIGINT \
-#     -s STANDALONE_WASM \
-#     -sERROR_ON_UNDEFINED_SYMBOLS=0 \
-#     --no-entry

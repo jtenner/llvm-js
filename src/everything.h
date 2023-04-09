@@ -21,3 +21,10 @@
 #include <llvm-c/Target.h>
 #include <llvm-c/TargetMachine.h>
 #include <llvm-c/Types.h>
+#include <llvm-c/Transforms/InstCombine.h>
+#include <llvm-c/Transforms/IPO.h>
+#include <llvm-c/Transforms/PassBuilder.h>
+#include <llvm-c/Transforms/PassManagerBuilder.h>
+#include <llvm-c/Transforms/Scalar.h>
+#include <llvm-c/Transforms/Utils.h>
+#include <llvm-c/Transforms/Vectorize.h>
